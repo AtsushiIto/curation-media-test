@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- Test -->
+<html lang="en-ja">
+    
+<head>
+<meta charset="utf-8">
+<title>Hello...</title>
+
+<!-- skelton.css http://getskeleton.com/ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" type="text/css" />
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
+<!-- Underscore.js http://underscorejs.org/ -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+<!-- SoundCloud sdk-->
+<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+
+</style>
+</head>
+
+<body onload="window.opener.setTimeout(window.opener.SC.connectCallback, 1)">
+	<div id="main" class="">
+		<h1>Curation Media Test</h1>
+		<div class="row instagram"></div>
+		</div>
+	</div>
+</div>
+
+<!-- start Javascript -->
+<script> 
+/*
+# 
+# instagram test
+# 
+https://instagram.com/oauth/authorize/?client_id=【CLIENT-ID】&redirect_uri=【REDIRECT-URI】&response_type=token
+#instagram api
+CLIENT INFO
+CLIENT ID	6ddbda8a00e84585a18b2d915cbf4f89
+CLIENT SECRET	18fa3562166e45ca9e0808aa1c5b763a
+WEBSITE URL	https://curation-media-test-atsushiito-1.c9users.io/
+REDIRECT URI	https://curation-media-test-atsushiito-1.c9users.io/
+token: 264577423.6ddbda8.f79766625ad04352b6982a35a96dd7c6
+*/
+
+$(function() {
+  $(".instagram").text("loading...");
+    $.ajax({
+      url: "https://api.instagram.com/v1/users/self/media/recent",
+      data: { access_token: "264577423.6ddbda8.f79766625ad04352b6982a35a96dd7c6" },
+      dataType: "jsonp",
+      error: function(jqXHR, textStatus, errorThrown) {
+        $(".instagram").text(textStatus);
+      },
+      success: function(data, textStatus, jqXHR) {
+        $(".instagram").text("");
+        for (var i = 0, length = 20; i < length; i++) {
+          var d = data.data[i];
+          $(".instagram").append(
+          $("<div>").addClass("image").append($("<a>").addClass("eleven column").attr("href", d.link).attr("target", "_blank").append($("<img>").attr("src", d.images.thumbnail.url))));}
+        }
+    });
+    
+    
+    /*
+    * soundcloud api
+    * client id : 574231ba501ffb6cb327919bd2ee9567
+	* secret : 492c77d5dcfd843a201d3f847f1d80c2
+    */
+	SC.initialize({
+	  client_id: '574231ba501ffb6cb327919bd2ee9567',
+	  redirect_uri: 'https://curation-media-test-atsushiito-1.c9users.io/'
+	});
+	
+
+});
+</script>
+<!-- end Javascript -->
+
+</body>
+</html>
